@@ -1,0 +1,55 @@
+# App name, override to match the name your app is known by
+app_name: Lotsawa re-translation CLI into languages other than English
+
+# Help header, customize to describe your app to your users
+header: == ${hydra.help.app_name} ==
+
+footer: |-
+  Powered by Hydra (https://hydra.cc)
+  Use --hydra-help to view Hydra specific help
+
+# Basic Hydra flags:
+#   $FLAGS_HELP
+#
+# Config groups, choose one of:
+#   $APP_CONFIG_GROUPS: All config groups that does not start with hydra/.
+#   $HYDRA_CONFIG_GROUPS: All the Hydra config groups (starts with hydra/)
+#
+# Configuration generated with overrides:
+#   $CONFIG : Generated config
+#
+template: |-
+  ${hydra.help.header}
+
+  This is a tool to use NLLB to re-translate an English translation into another language, such as Italian or Chinese. You should first use the translate CLI and edit the resulting English translation as appropriate before using this tool.
+
+  Main configuration options:
+
+  model:
+  
+    This configuration group configures the model to be used for re-translation.
+
+    hf_model_name: The Hugging Face name of the model to use. Defaults to "facebook/nllb-200-distilled-600M". Should be compatible with the M2M architecture.
+
+    cuda: Use an NVIDIA GPU. Requires CUDA >= 11.x. Defaults to false.
+
+    max_length: Maximum length, in tokens, of a generated target language sentence. Defaults to 200.
+  
+  target_language_code: The NLLB language code for the target language to re-translate into.
+
+  list_language_codes: Instead of re-translating, only list the language codes supported by the model.
+
+  output_extension: File extension of the re-translated output. Defaults to the value of target_language_code.
+
+  input_glob: A glob of English input files to translate. Defaults to "translations/*.en".
+
+  output_dir: Output directory, defaults to "./translations".
+
+  == Config ==
+
+  This is the current configuration. You can override everything.
+
+  $CONFIG
+  ==
+
+  ${hydra.help.footer}
