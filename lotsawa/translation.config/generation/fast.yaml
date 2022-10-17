@@ -1,0 +1,5 @@
+defaults:
+  - model-segmenter-pooled-context
+
+generation:
+  num_beams: 5

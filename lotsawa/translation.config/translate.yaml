@@ -1,9 +1,9 @@
 defaults:
-  - model: olive-cormorant-nllb-pooled-context-cased
-  # - model: nllb-with-context-for-zst
-  - generation: model-segmenter-pooled-context
+  - model: cased
+  - generation: slow
   - mode: interactive
   # - word_exclusion: bad-words-list
+  - help/translate@hydra.help
   - override hydra/job_logging: colorlog
   - override hydra/hydra_logging: colorlog
   - _self_

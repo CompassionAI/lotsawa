@@ -1,0 +1,75 @@
+# App name, override to match the name your app is known by
+app_name: Lotsawa translation CLI
+
+# Help header, customize to describe your app to your users
+header: == ${hydra.help.app_name} ==
+
+footer: |-
+  Powered by Hydra (https://hydra.cc)
+  Use --hydra-help to view Hydra specific help
+
+# Basic Hydra flags:
+#   $FLAGS_HELP
+#
+# Config groups, choose one of:
+#   $APP_CONFIG_GROUPS: All config groups that does not start with hydra/.
+#   $HYDRA_CONFIG_GROUPS: All the Hydra config groups (starts with hydra/)
+#
+# Configuration generated with overrides:
+#   $CONFIG : Generated config
+#
+template: |-
+  ${hydra.help.header}
+
+  Main configuration options:
+
+  mode: batch, interactive
+  
+    Batch mode will process a glob of input files.
+      mode.input_glob (required): A glob of Tibetan input files to translate.
+      mode.output_dir: Output directory, defaults to "./translations"
+      mode.output_extension: Extension of output files, defaults to "en".
+      mode.output_parallel_translation: Output parallel Tibetan and English, as opposed to English only. Defaults to true.
+    
+    Interactive mode will process console inputs.
+  
+  cuda: Use an NVIDIA GPU. Requires CUDA >= 11.x.
+
+  model: cased (default), uncased.
+
+    Cased will attempt to introduce upper case English letters as appropriate. Note that, while we have done our best to clean up the casing in 84,000 data, it is still very messy.
+
+    Uncased will output only lower case English letters.
+
+  generation: slow (default), fast.
+
+    Configuration of the algorithm used to generate the English translation from the neural network.
+
+    This configuration group has deeper settings but changing this is not recommended unless you know what you're doing. Some settings may cause very long running times, test on small samples first.
+
+    generation.num_beams: Number of beams in the beam search. The difference between "slow" and "fast" generation is that fast sets num_beams to 5 and slow sets num_beams to 50.
+
+    generation.generator_kwargs: All Hugging Face generator function keyword arguments can go here, see https://huggingface.co/docs/transformers/v4.23.1/en/main_classes/text_generation#transformers.generation_utils.GenerationMixin.generate.
+    
+    Most important that you may wish to tweak are: repetition_penalty, no_repeat_ngram_size, length_penalty, exponential_decay_length_penalty, max_time.
+
+    Diverse beam search is activated by setting num_beam_groups and diversity_penalty.
+
+  word_exclusion: bad-words-list
+
+    Provide a YAML file with a list of words to never generate. The YAML file needs to include an NLLB language code for the word list, currently only eng_Latn makes sense here but in the future maybe there will be more.
+    
+    An example YAML file is in the configuration folder under translation.config/word_exclusion/bad-words-list.yaml.
+
+  == FULL LIST OF HYDRA OPTIONS ==
+
+  == Full list of available option groups ==
+
+  $APP_CONFIG_GROUPS
+
+  == Config ==
+  This is the current configuration. You can override everything.
+
+  $CONFIG
+  
+  ${hydra.help.footer}
