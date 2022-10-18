@@ -5,7 +5,7 @@ import hydra
 from cai_manas.part_of_speech.pos_tagger import PartOfSpeechTagger
 
 
-@hydra.main(version_base="1.2", config_path="./token_classification.config", config_name="part_of_speech")
+@hydra.main(version_base="1.2", config_path="token_classification_config", config_name="part_of_speech")
 def main(cfg):
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",

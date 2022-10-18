@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from tqdm.auto import tqdm
 
 
-@hydra.main(version_base="1.2", config_path="./translation.config", config_name="retranslate")
+@hydra.main(version_base="1.2", config_path="translation_config", config_name="retranslate")
 def main(cfg):
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
