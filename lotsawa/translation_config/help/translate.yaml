@@ -23,7 +23,7 @@ template: |-
 
   Main configuration options:
 
-  mode: batch, interactive
+  mode: batch, interactive (default)
   
     Batch mode will process a glob of input files.
       mode.input_glob (required): A glob of Tibetan input files to translate.
@@ -41,13 +41,13 @@ template: |-
 
     Uncased will output only lower case English letters.
 
-  generation: slow (default), fast.
+  generation: slow (default), medium, fast.
 
     Configuration of the algorithm used to generate the English translation from the neural network.
 
     This configuration group has deeper settings but changing this is not recommended unless you know what you're doing. Some settings may cause very long running times, test on small samples first.
 
-    generation.num_beams: Number of beams in the beam search. The difference between "slow" and "fast" generation is that fast sets num_beams to 5 and slow sets num_beams to 50.
+    generation.num_beams: Number of beams in the beam search. The difference between "slow", "medium" and "fast" generation is that fast sets num_beams to 5, medium to 20, and slow to 50.
 
     generation.generator_kwargs: All Hugging Face generator function keyword arguments can go here, see https://huggingface.co/docs/transformers/v4.23.1/en/main_classes/text_generation#transformers.generation_utils.GenerationMixin.generate.
     
@@ -59,6 +59,6 @@ template: |-
 
     Provide a YAML file with a list of words to never generate. The YAML file needs to include an NLLB language code for the word list, currently only eng_Latn makes sense here but in the future maybe there will be more.
     
-    An example YAML file is in the configuration folder under translation.config/word_exclusion/bad-words-list.yaml.
+    An example YAML file is in the configuration folder under translation_config/word_exclusion/bad-words-list.yaml.
 
   ${hydra.help.footer}
