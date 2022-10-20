@@ -18,6 +18,8 @@ lotsawa-retranslate target_language_code=zho_Hans
 lotsawa-words
 ```
 
+A sample set of Tibetan documents to experiment on is available at <https://compassionai.s3.amazonaws.com/public/translation_test_docs.zip>.
+
 Lotsawa is backed by our novel models that are the results of a research program into how to convert existing state-of-the-art translation models for short sentences, such as NLLB (No Language Left Behind), into models that are better able to handle the ambiguity of long classical Tibetan texts. The models used in Lotsawa utilize pre-trained, state-of-the-art translation models as a backbone that have had their neural architectures significantly modified to accomodate long texts. In particular, we are not simply serving (fine-tuned) NLLB; we are serving a model with a new neural architecture that's much better than NLLB at handling Tibetan ambiguity. Lotsawa implements a carefully tuned end-to-end translation pipeline for long texts - the result of many experiments on strategies for the preservation of contextual semantic information in the low-resource setting of classical Tibetan. Please see <https://www.compassion-ai.org/> for an explanation of our research.
 
 > We are a tiny team of volunteers on a shoestring budget. The community of people who would benefit from these tools is likewise very small. If we don't work together, these tools will struggle to improve and be useful.
@@ -168,6 +170,8 @@ lotsawa-translate mode=batch mode.input_glob=~/tibetan_texts/*.bo
 ```
 
 This will translate all texts in the directory `~/tibetan_texts` that have the extension `.bo` and output the results to `./translations`. To control the output directory, set `mode.output_dir`.
+
+A sample set of Tibetan documents to experiment on is available at <https://compassionai.s3.amazonaws.com/public/translation_test_docs.zip>.
 
 To use CUDA, pass in `cuda=true`. For example:
 
