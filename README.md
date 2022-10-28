@@ -12,7 +12,7 @@ lotsawa-translate
 lotsawa-translate mode=batch mode.input_glob=heart_sutra.bo
 
 # After translating to English, re-translate the Heart Sutra into simplified Chinese
-lotsawa-retranslate target_language_code=zho_Hans
+lotsawa-retranslate output.target_language_code=zho_Hans
 
 # Bring up an interactive tool for splitting Tibetan sections into words and tagging those words as nouns/verbs/adjectives/etc
 lotsawa-words
@@ -219,7 +219,7 @@ lotsawa-translate mode=batch mode.input_glob=~/tibetan_texts/*.bo
 # Reviewing the English translation here will improve the Chinese
 
 # Finally, re-translate the English into Chinese
-lotsawa-retranslate target_language_code=zho_Hans
+lotsawa-retranslate output.target_language_code=zho_Hans
 ```
 
 The results will be in `./translations` with the extension `.zho_Hans`.
@@ -227,6 +227,26 @@ The results will be in `./translations` with the extension `.zho_Hans`.
 You do not need to use `lotsawa-translate` to produce the English text. The `lotsawa-retranslate` tool will go through the input files line by line, skip any lines with Tibetan characters in them, and translate each remaining line using NLLB. The most important thing to know is: NLLB works well on _short_ inputs. A simple approach with English would be to split every English sentence into its own line. **PLEASE** contact us at <contact@compassion-ai.org> so that we can help, or open an issue on our GitHub page.
 
 If you're interested in using the 84,000 XML files, note that the tool will not do any preprocessing, such as unfolding the XML tags. The class `TeiLoader`, found in the CompassionAI/common repo under `cai_common/data/tei_loader.py`, uses BeautifulSoup to extract and clean the translations from the 84,000 XML files. _Please_ contact us if you're interested in using this code.
+
+The retranslation tool has the generation options configuration group that allows fine-grained control over the text generation algorithm. 
+
+  - You can tweak the beam search parameters, such as the number of beams or the repetition penalty.
+  - You can specify a word blacklist here. Can be especially useful to avoid some nonsensical named entity translations or toxic terms, or to stop the model from inserting English terms into non-English translations.
+
+    Note that, for languages that don't have word indicators such as spaces, the word blacklist is unlikely to work well. This is because the NLLB tokenizer is based on SentencePiece, which produces highly contextual tokenizations. The blacklist is converted to tokens. We will implement a way around this if we find one. If you're using the blacklist to exclude English from your generated text, consider using an alphabet restriction.
+
+  - You can constrain the model to generate a specific alphabet. The supported alphabets are, in alphabetical order: 
+  Arabic, Armenian, Bengali, Chinese (corresponds to the Unicode alphabet name "CJK Unified"), Cyrillic, Devangari, Ethiopic, Georgian, Greek, Gujarati, Gurmukhi, Hangul, Hebrew, Hiragana, Kannada, Katakana, Khmer, Lao, Latin, Malayalam, Myanmar, Ol Chiki, Oriya, Sinhala, Tamil, Telugu, Thai, Tibetan (intended for research, eg back-translation), Tifinagh. All alphabets include the full range of characters in the Unicode alphabet with that name, so for example Cyrillic includes all non-Russian characters from other Slavic languages such as Ukrainian.
+
+    Make sure your alphabet makes sense for your target language! Lotsawa will not warn you if it doesn't.
+
+**NB:** Due to the nature of maximum-likelihood-like neural network training combined with the fact that the NLLB dataset was scraped from the internet, alphabet constraints are very likely to generate text in the language most represented in that alphabet on the internet. In particular, Latin will generate English, Cyrillic will generate Russian, Devangari will generate Hindi, Myanmar will generate Burmese, etc. This is an artifact of the protocol used to train NLLB, it is not a cultural or political statement of some kind by anyone involved. You should get good results when combining alphabet constraints with language target code conditioning. For example, 
+
+```bash
+lotsawa-retranslate output.target_language_code=ukr_Cyrl generation.alphabet=cyrillic
+```
+
+should produce good Ukrainian. Implementing new alphabet constraints is usually straightforward. Feel free to contribute, or _please_ contact us at <contact@compassion-ai.org> or open an issue on our GitHub page.
 
 See the full help for `lotsawa-retranslate` for a complete list of options:
 
