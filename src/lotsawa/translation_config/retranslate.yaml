@@ -21,6 +21,8 @@ generation:
   generator_kwargs:
     repetition_penalty: 1.4
     no_repeat_ngram_size: 3
+  
+  word_exclusion_list: ~
 
 input_glob: translations/*.en
 

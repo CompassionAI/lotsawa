@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import yaml
 import logging
 import unicodedata
 
@@ -31,6 +32,21 @@ def main(cfg):
         logging.debug("  Copying model to GPU")
         model.cuda()
 
+    if cfg.generation.word_exclusion_list is not None:
+        if not os.path.isfile(cfg.generation.word_exclusion_list) or \
+            not os.path.splitext(cfg.generation.word_exclusion_list)[1] in {'.yaml', '.yml'} \
+        :
+            logging.error("The word exclusion list should be a YAML file")
+            raise FileNotFoundError("The word exclusion list should be a YAML file")
+        logging.info("Tokenizing word exclusion list")
+        with open(cfg.generation.word_exclusion_list, 'r') as f:
+            bad_words = yaml.safe_load(f)
+        bad_words = bad_words.get(cfg.output.target_language_code, [])
+        bad_word_tokens = [tokenizer.encode(w, add_special_tokens=False) for w in tqdm(bad_words)]
+    else:
+        bad_word_tokens = []
+    print(bad_word_tokens)
+
     logging.info("Re-translating")
     output_ext = getattr(cfg.output, "output_extension", cfg.output.target_language_code)
     in_fns = glob.glob(cfg.input_glob)
@@ -49,6 +65,7 @@ def main(cfg):
                     translated_tokens = model.generate(
                         **tokenizer(line, return_tensors="pt").to(model.device),
                         forced_bos_token_id=tokenizer.lang_code_to_id[cfg.output.target_language_code],
+                        bad_words_ids=None if len(bad_word_tokens) == 0 else bad_word_tokens,   # Needs to be None instead of empty, otherwise HF throws ValueError
                         max_length=cfg.model.max_length,
                         num_beams=getattr(cfg.generation, "num_beams", 10),
                         **dict(getattr(cfg.generation, "generator_kwargs", {}))

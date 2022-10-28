@@ -58,6 +58,17 @@ template: |-
 
     Most important that you may wish to tweak is repetition_penalty. Others of interest are no_repeat_ngram_size, length_penalty, exponential_decay_length_penalty, max_time.
 
+    word_exclusion_list: A path to a YAML file that contains target language keys with lists of words to exclude from generation. For example:
+  
+      zho_Hans:
+        - Sariputra
+        - 萨里普特拉
+
+      rus_Cyrl:
+        - sariputra
+        - avalokitesvara
+        - замалчивания
+
   == Config ==
 
   This is the current configuration. You can override everything.
