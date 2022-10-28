@@ -1,4 +1,5 @@
 defaults:
+  - generation: alphabet-inclusions
   - help/retranslate@hydra.help
   - override hydra/job_logging: colorlog
   - override hydra/hydra_logging: colorlog
@@ -16,6 +17,8 @@ model:
   max_length: 200
 
 generation:
+  alphabet: ~
+
   num_beams: 10
 
   generator_kwargs:

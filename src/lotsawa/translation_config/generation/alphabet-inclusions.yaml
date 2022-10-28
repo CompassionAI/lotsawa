@@ -1,0 +1,57 @@
+base_alphabet_inclusions:
+  - ' '
+  - '!'
+  - '"'
+  - '#'
+  - '%'
+  - '&'
+  - "'"
+  - ','
+  - '-'
+  - '.'
+  - '/'
+  - '0'
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+  - '9'
+  - ':'
+  - ';'
+  - '?'
+  - '▁'
+
+known_alphabets:
+  hangul: hangul
+  chinese: cjk unified
+  katakana: katakana
+  hiragana: hiragana
+  tifinagh: tifinagh
+  greek: greek
+  latin: latin
+  ol chiki: ol chiki
+  khmer: khmer
+  ethiopic: ethiopic
+  georgian: georgian
+  myanmar: myanmar
+  tibetan: tibetan
+  lao: lao
+  thai: thai
+  sinhala: sinhala
+  malayalam: malayalam
+  kannada: kannada
+  telugu: telugu
+  tamil: tamil
+  oriya: oriya
+  gujarati: gujarati
+  gurmukhi: gurmukhi
+  bengali: bengali
+  devangari: devangari
+  arabic: arabic
+  hebrew: hebrew
+  armenian: armenian
+  cyrillic: cyrillic

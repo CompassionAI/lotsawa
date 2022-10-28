@@ -46,6 +46,26 @@ def main(cfg):
     else:
         bad_word_tokens = []
 
+    if getattr(cfg.generation, "alphabet", None) is not None:
+        logging.info("Preparing alphabet constraints")
+        if not cfg.generation.alphabet in cfg.generation.known_alphabets:
+            logging.warning(f"Provided alphabet name '{cfg.generation.alphabet}' not in set of known alphabets. "
+                             "Will attempt to generate anyway but you may get only symbols in your output and the "
+                             "generation may take an extremely long time, even with GPU acceleration switched on. "
+                             "The list of known alphabets is: "
+                            f"{', '.join(sorted(list(cfg.generation.known_alphabets.keys())))}.")
+        alphabet_name = cfg.generation.known_alphabets.get(cfg.generation.alphabet, cfg.generation.alphabet).lower()
+        base_inclusions = set(cfg.generation.base_alphabet_inclusions)
+        allowed_token_ids = tokenizer.convert_tokens_to_ids(filter(
+            lambda t: all([
+                c in base_inclusions or alphabet_name in unicodedata.name(c, "").lower() for c in t
+            ]),
+            tokenizer.vocab.keys()
+        )) + [tokenizer.eos_token_id]
+        token_constraints_fn = lambda _1, _2: allowed_token_ids
+    else:
+        token_constraints_fn = None
+
     logging.info("Re-translating")
     output_ext = getattr(cfg.output, "output_extension", cfg.output.target_language_code)
     in_fns = glob.glob(cfg.input_glob)
@@ -64,6 +84,7 @@ def main(cfg):
                     translated_tokens = model.generate(
                         **tokenizer(line, return_tensors="pt").to(model.device),
                         forced_bos_token_id=tokenizer.lang_code_to_id[cfg.output.target_language_code],
+                        prefix_allowed_tokens_fn=token_constraints_fn,
                         bad_words_ids=None if len(bad_word_tokens) == 0 else bad_word_tokens,   # Needs to be None instead of empty, otherwise HF throws ValueError
                         max_length=cfg.model.max_length,
                         num_beams=getattr(cfg.generation, "num_beams", 10),

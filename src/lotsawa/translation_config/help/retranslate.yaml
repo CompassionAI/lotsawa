@@ -69,6 +69,10 @@ template: |-
         - avalokitesvara
         - замалчивания
 
+    alphabet: A Unicode alphabet name to enforce alphabet constraints. The model will only generate tokens that consist of characters that either belong to a set of common characters such as commas and spaces, or characters whose unicode names contain the name of the alphabet specified here (with the exception of chinese - the alphabet name is mapped to CJK unified). The complete list of alphabets, in alphabetical order, is:
+
+      arabic, armenian, bengali, chinese, cyrillic, devangari, ethiopic, georgian, greek, gujarati, gurmukhi, hangul, hebrew, hiragana, kannada, katakana, khmer, lao, latin, malayalam, myanmar, ol chiki, oriya, sinhala, tamil, telugu, thai, tibetan, tifinagh
+
   == Config ==
 
   This is the current configuration. You can override everything.
