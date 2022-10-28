@@ -45,7 +45,6 @@ def main(cfg):
         bad_word_tokens = [tokenizer.encode(w, add_special_tokens=False) for w in tqdm(bad_words)]
     else:
         bad_word_tokens = []
-    print(bad_word_tokens)
 
     logging.info("Re-translating")
     output_ext = getattr(cfg.output, "output_extension", cfg.output.target_language_code)
