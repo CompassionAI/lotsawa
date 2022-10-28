@@ -25,6 +25,8 @@ template: |-
 
   Main configuration options:
 
+  input_glob: A glob of English input files to translate. Defaults to "translations/*.en".
+
   model:
   
     This configuration group configures the model to be used for re-translation.
@@ -35,15 +37,26 @@ template: |-
 
     max_length: Maximum length, in tokens, of a generated target language sentence. Defaults to 200.
   
-  target_language_code: The NLLB language code for the target language to re-translate into.
 
-  list_language_codes: Instead of re-translating, only list the language codes supported by the model.
+  output:
 
-  output_extension: File extension of the re-translated output. Defaults to the value of target_language_code.
+    target_language_code: The NLLB language code for the target language to re-translate into.
 
-  input_glob: A glob of English input files to translate. Defaults to "translations/*.en".
+    list_language_codes: Instead of re-translating, only list the language codes supported by the model.
 
-  output_dir: Output directory, defaults to "./translations".
+    output_extension: File extension of the re-translated output. Defaults to the value of target_language_code.
+
+    output_dir: Output directory, defaults to "./translations".
+
+  generation:
+
+    Allows fine-grained control over the text generation algorithm. We recommend not changing this unless you really need to.
+
+    generation.num_beams: Number of beams in the beam search. Default is 10.
+
+    generation.generator_kwargs: All Hugging Face generator function keyword arguments can go here, see https://huggingface.co/docs/transformers/v4.23.1/en/main_classes/text_generation#transformers.generation_utils.GenerationMixin.generate.
+
+    Most important that you may wish to tweak is repetition_penalty. Others of interest are no_repeat_ngram_size, length_penalty, exponential_decay_length_penalty, max_time.
 
   == Config ==
 

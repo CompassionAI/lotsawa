@@ -15,9 +15,18 @@ model:
   cuda: false
   max_length: 200
 
-list_language_codes: false
-target_language_code: ita_Latn
-# output_extension: it
+generation:
+  num_beams: 10
+
+  generator_kwargs:
+    repetition_penalty: 1.4
+    no_repeat_ngram_size: 3
 
 input_glob: translations/*.en
-output_dir: translations
+
+output:
+  list_language_codes: false
+  target_language_code: zho_Hans
+  # output_extension: it
+
+  output_dir: translations
