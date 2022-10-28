@@ -43,7 +43,7 @@ We assume you're on a Mac. The installation should work on Windows and Linux _mu
 Install with pip:
 
 ```bash
-pip install lotsawa
+pip install lotsawa --upgrade
 ```
 
 Lotsawa requires Python 3.6 or greater. This shouldn't be a problem on almost any modern computer. If you are having issues with this on an older Mac, see the Homebrew documentation here: <https://docs.brew.sh/Homebrew-and-Python>. If you can't make it work or if the Homebrew docs are too much, contact us at <contact@compassion-ai.org> or open a GitHub issue.
