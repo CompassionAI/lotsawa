@@ -34,6 +34,10 @@ Lotsawa is backed by our novel models that are the results of a research program
 
 We assume you're on a Mac. The installation should work on Windows and Linux _mutatis mutandis_.
 
+> **IMPORTANT:** There is currently an incompatibility between Hydra and Python 3.11. Furthermore, attempting to install with Python 3.11 will require building Hugging Face libraries from source, since prebuilt wheels are not yet available. This requires gcc, cmake and Rust.
+>
+> We require Python <= 3.10 for Lotsawa until this is fixed upstream. Our provided conda environment file has the correct settings.
+
 ### Basic instructions
 
 Install with pip:
