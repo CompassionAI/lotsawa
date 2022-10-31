@@ -1,6 +1,9 @@
 defaults:
   - help/part-of-speech@hydra.help
+  - mode: interactive
   - model: intersyllabic-olive-cormorant
+  - override hydra/job_logging: colorlog
+  - override hydra/hydra_logging: colorlog
   - _self_
 
 hydra:
