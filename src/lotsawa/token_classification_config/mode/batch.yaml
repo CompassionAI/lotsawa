@@ -1,0 +1,31 @@
+process_func:
+  _target_: lotsawa.part_of_speech.batch
+
+input_glob: ~     # This should be specified from the command line
+input_encoding: utf-8
+
+output_dir: ./pos_tags
+output_extension: pos
+
+# Output error messages as the translation for segments whose tokenization is too long for the encoder, instead of
+#   failing with an exception
+skip_long_inputs: true
+
+segmenter: 
+  segmenter:
+    _target_: cai_garland.utils.segmenters.SegmenterTargetTokenCount
+  kwargs: {}
+
+# Preprocessing is applied before segmentation.
+#
+#   This is a (possibly empty) list of function classes in cai_garland.utils.str_processors, formatted like so:
+#     - _target_: cai_garland.utils.str_processors.ProcessorSampleFunc1
+#     - _target_: cai_garland.utils.str_processors.ProcessorSampleFunc2
+#     - ...
+preprocessing:
+  - _target_: cai_garland.utils.str_processors.ProcessorRemoveNewLine
+  - _target_: cai_garland.utils.str_processors.ProcessorRemoveBracketed
+    _args_: ["{([", "])}"]
+  - _target_: cai_garland.utils.str_processors.ProcessorKeepAlphabet
+    _args_: [" ", "TIBETAN"]
+  - _target_: cai_garland.utils.str_processors.ProcessorRemoveConsecutiveSpaces
