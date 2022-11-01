@@ -2,6 +2,7 @@ import os
 import sys
 import glob
 import hydra
+import pickle
 import logging
 
 from tqdm.auto import tqdm
@@ -25,6 +26,7 @@ def batch(tagger, mode_cfg):
     if mode_cfg.input_glob is None:
         raise ValueError("Specify an input file (or glob) in the mode.input_glob setting. You can do this from the "
                          "command line.")
+    to_pickle = mode_cfg.output_pickle_file
     os.makedirs(mode_cfg.output_dir, exist_ok=True)
     in_fns = glob.glob(mode_cfg.input_glob)
     for in_fn in (files_pbar := tqdm(in_fns)):
@@ -35,6 +37,8 @@ def batch(tagger, mode_cfg):
         out_fn = os.path.join(
             mode_cfg.output_dir, os.path.splitext(os.path.basename(in_fn))[0] + '.' + mode_cfg.output_extension)
 
+        if to_pickle:
+            for_pickle = []
         with open(out_fn, mode='w') as out_f:
             tagger.segmenter = instantiate(mode_cfg.segmenter.segmenter)
             tagger.preprocessors = [instantiate(preproc_func) for preproc_func in mode_cfg.get("preprocessing", [])]
@@ -49,6 +53,12 @@ def batch(tagger, mode_cfg):
                 out_f.write('\n')
                 out_f.write('\n')
                 out_f.flush()
+                if to_pickle:
+                    for_pickle.append((segments, tags))
+        if to_pickle:
+            logging.info("Dumping pickle file")
+            with open(out_fn + '.pkl', 'wb') as out_f:
+                pickle.dump(for_pickle, out_f)
 
 
 @hydra.main(version_base="1.2", config_path="token_classification_config", config_name="part_of_speech")

@@ -6,6 +6,7 @@ input_encoding: utf-8
 
 output_dir: ./pos_tags
 output_extension: pos
+output_pickle_file: false
 
 # Output error messages as the translation for segments whose tokenization is too long for the encoder, instead of
 #   failing with an exception
