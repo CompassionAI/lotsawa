@@ -29,6 +29,7 @@ def batch(tagger, mode_cfg):
     to_pickle = mode_cfg.output_pickle_file
     os.makedirs(mode_cfg.output_dir, exist_ok=True)
     in_fns = sorted(glob.glob(mode_cfg.input_glob))
+    logging.info("Processing input glob")
     for in_fn in (files_pbar := tqdm(in_fns)):
         files_pbar.set_description(os.path.basename(in_fn))
         with open(in_fn, encoding=mode_cfg.input_encoding) as in_f:
@@ -56,7 +57,6 @@ def batch(tagger, mode_cfg):
                 if to_pickle:
                     for_pickle.append((segments, tags))
         if to_pickle:
-            logging.info("Dumping pickle file")
             with open(out_fn + '.pkl', 'wb') as out_f:
                 pickle.dump(for_pickle, out_f)
 
@@ -70,8 +70,10 @@ def main(cfg):
         level=logging.INFO,
     )
 
+    logging.info("Loading model")
     tagger = PartOfSpeechTagger(cfg.model.model_ckpt)
     if cfg.cuda:
+        logging.info("Moving model to GPU")
         tagger.cuda()
 
     instantiate(cfg.mode.process_func, tagger, cfg.mode)
