@@ -71,6 +71,8 @@ def main(cfg):
     )
 
     tagger = PartOfSpeechTagger(cfg.model.model_ckpt)
+    if cfg.cuda:
+        tagger.cuda()
 
     instantiate(cfg.mode.process_func, tagger, cfg.mode)
 
