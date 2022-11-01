@@ -1,0 +1,3 @@
+segmenter:
+  _target_: cai_garland.utils.segmenters.SegmenterTargetTokenCount
+kwargs: {}

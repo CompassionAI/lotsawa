@@ -1,0 +1,4 @@
+segmenter:
+  _target_: cai_garland.utils.segmenters.SegmenterModel
+  _args_: ["segmenter-olive-cormorant"]
+kwargs: {"max_length": 128}

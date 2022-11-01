@@ -1,3 +1,7 @@
+defaults:
+  - segmenter: model
+  - _self_
+
 process_func:
   _target_: lotsawa.part_of_speech.batch
 
@@ -11,11 +15,6 @@ output_pickle_file: false
 # Output error messages as the translation for segments whose tokenization is too long for the encoder, instead of
 #   failing with an exception
 skip_long_inputs: true
-
-segmenter: 
-  segmenter:
-    _target_: cai_garland.utils.segmenters.SegmenterTargetTokenCount
-  kwargs: {}
 
 # Preprocessing is applied before segmentation.
 #

@@ -41,7 +41,7 @@ def batch(tagger, mode_cfg):
         if to_pickle:
             for_pickle = []
         with open(out_fn, mode='w') as out_f:
-            tagger.segmenter = instantiate(mode_cfg.segmenter.segmenter)
+            tagger.segmenter = instantiate(mode_cfg.segmenter.segmenter, translator=tagger).to(tagger.model.device)
             tagger.preprocessors = [instantiate(preproc_func) for preproc_func in mode_cfg.get("preprocessing", [])]
 
             for segments, tags in tagger.batch_tag(
