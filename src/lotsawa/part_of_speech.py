@@ -28,7 +28,7 @@ def batch(tagger, mode_cfg):
                          "command line.")
     to_pickle = mode_cfg.output_pickle_file
     os.makedirs(mode_cfg.output_dir, exist_ok=True)
-    in_fns = glob.glob(mode_cfg.input_glob)
+    in_fns = sorted(glob.glob(mode_cfg.input_glob))
     for in_fn in (files_pbar := tqdm(in_fns)):
         files_pbar.set_description(os.path.basename(in_fn))
         with open(in_fn, encoding=mode_cfg.input_encoding) as in_f:
