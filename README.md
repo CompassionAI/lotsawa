@@ -260,15 +260,31 @@ lotsawa-retranslate --help
 
 ### Word segmentation and part-of-speech tagging
 
-Currently we provide only an interactive tool for this to help you assess the performance for your needs and as an example for how to use our Python packages. If you have a use case for our token classifiers that needs a different delivery of the models, or if you need us to change how the models themselves work, _please_ contact us at <contact@compassion-ai.org> or open an issue on our GitHub page.
+We provide interactive and batch segmentation and tagging.
 
-To run the tool, just activate your conda environment (if any) and use:
+ - Interactive mode will prompt you for individual short Tibetan sections and will output word segmentations with part-of-speech tags. This is intended as a test or a demo.
+ - Batch mode will process long Tibetan files (in Unicode with uchen script). This mode will involve segmentation of the long text into shorter sections, followed by word segmentation and part-of-speech tagging.
+
+To run the tool in interactive mode, just activate your conda environment (if any) and use:
 
 ```bash
 lotsawa-words
 ```
+Interactive is the default mode. An example that uses batch mode is:
 
-The tool currently has no user-configurable options. We expect to eventually update the models underlying this tool, especially the tokenization.
+```bash
+lotsawa-words mode=batch mode.input_glob=~/tibetan_texts/*.bo
+```
+
+This will segment and tag all texts in the directory `~/tibetan_texts` that have the extension `.bo` and output the results to `./pos_tags`. To control the output directory, set `mode.output_dir`.
+
+To use CUDA, pass in `cuda=true`. For example:
+
+```bash
+lotsawa-words mode=batch mode.input_glob=~/tibetan_texts/*.bo cuda=true
+```
+
+We are working on updating the models underlying this tool, especially the tokenization. If you have a use case for our token classifiers that needs a different delivery of the models, or if you need us to change how the models themselves work, _please_ contact us at <contact@compassion-ai.org> or open an issue on our GitHub page.
 
 ### Cleaning the model cache
 

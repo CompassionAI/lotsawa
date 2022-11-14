@@ -25,7 +25,19 @@ template: |-
 
   Note that, due to the current tokenization strategy, word segments may include what a native speaker would consider to be multiple words. In this case the tag will include multiple parts of speech.
 
-  Currently this CLI only works in interactive mode and has no lay-person configuration options.
+  This CLI supports both interactive and batch mode.
+
+  mode: batch, interactive (default)
+  
+    Batch mode will process a glob of input files.
+      mode.input_glob (required): A glob of Tibetan input files to segment and tag.
+      mode.output_dir: Output directory, defaults to "./pos_tags"
+      mode.output_extension: Extension of output files, defaults to "pos".
+      mode.output_pickle_file: Output a pickle file that contains the tagged segments, to make loading for downstream analytics easier.
+    
+    Interactive mode will process console inputs.
+  
+  cuda: Use an NVIDIA GPU. Requires CUDA >= 11.x.
 
   == ADVANCED HELP: FULL LIST OF HYDRA OPTIONS ==
 
