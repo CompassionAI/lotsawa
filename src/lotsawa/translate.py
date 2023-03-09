@@ -62,6 +62,9 @@ def batch(translator, mode_cfg, generation_cfg, target_language_code):
             ]
             translator.soft_segmenter = instantiate(
                 generation_cfg.segmentation.soft_segmentation, translator=translator)
+            if mode_cfg.save_state:
+                translator.soft_segmenter.segments_file = os.path.join(
+                    mode_cfg.output_dir, os.path.splitext(os.path.basename(in_fn))[0] + ".segments")
             translator.soft_segment_combiner_config = getattr(
                 generation_cfg.segmentation, "soft_segment_combiner", None)
             translator.soft_segment_preprocessors = [

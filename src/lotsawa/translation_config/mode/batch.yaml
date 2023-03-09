@@ -11,6 +11,10 @@ output_dir: ./translations
 # Extension of the output files (without the starting dot)
 output_extension: en
 
+# Set this to true to enable restarting from a stopped translation job. Useful for very long texts, set to off by
+#   default to avoid creating confusing files.
+save_state: false
+
 # If true will output in the form:
 #   preprocessed source segment
 #   postprocessed translation
