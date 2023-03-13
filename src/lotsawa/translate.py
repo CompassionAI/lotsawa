@@ -12,6 +12,9 @@ from tqdm.auto import tqdm
 from cai_garland.utils.translator import Translator
 
 
+logger = logging.getLogger(__name__)
+
+
 def interactive(translator, _mode_cfg, _generation_cfg, target_language_code):
     print("Interactive Tibetan translation...")
     while True:
@@ -54,6 +57,18 @@ def batch(translator, mode_cfg, generation_cfg, target_language_code):
             translation_kwargs["context_window_characters"] = \
                 generation_cfg.generation.pooled_context.context_window.characters
 
+        prev_lines = []
+        if mode_cfg.save_state and os.path.exists(out_fn):
+            with open(out_fn, mode='r') as out_f:
+                logger.info("Found previous output, will fast forward")
+                prev_lines = list(filter(lambda x: len(x) > 0, map(lambda x: x.strip(), out_f.readlines())))
+                if not len(prev_lines) % 2 == 0:
+                    raise ValueError("Previous output contains an odd number of lines, appears to be corrupt. You can "
+                                     "delete the previous output file if you want to keep the previous segmentation, "
+                                     "or run without mode.save_state=true to reset everything.")
+                prev_lines = list(zip(prev_lines[::2], prev_lines[1::2]))
+                logger.info(f"Loaded {len(prev_lines):,} previous lines")
+
         with open(out_fn, mode='w') as out_f:
             translator.hard_segmenter = instantiate(generation_cfg.segmentation.hard_segmentation)
             translator.preprocessors = [
@@ -83,6 +98,7 @@ def batch(translator, mode_cfg, generation_cfg, target_language_code):
                 soft_segmenter_kwargs=dict(generation_cfg.segmentation.soft_segmenter_kwargs),
                 throw_translation_errors=not mode_cfg.skip_long_inputs,
                 target_language_code=target_language_code,
+                previous_results=prev_lines,
                 generator_kwargs=dict(generation_cfg.generation.get("generator_kwargs", {})),
                 **translation_kwargs
             ):
