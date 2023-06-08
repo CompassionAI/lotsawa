@@ -129,6 +129,8 @@ def main(cfg):
 
     if cfg.cuda:
         translator.cuda()
+    if cfg.mps:
+        translator.mps()
 
     if target_language_code is not None and hasattr(cfg, "word_exclusion"):
         translator.bad_words = getattr(cfg.word_exclusion, target_language_code, [])

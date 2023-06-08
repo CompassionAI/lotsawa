@@ -50,7 +50,7 @@ Lotsawa requires Python 3.6 or greater. This shouldn't be a problem on almost an
 
 ### Basic instructions - NVidia GPUs
 
-**This section does not apply to Macs. Newer Macs with M1 chips or better should use the embedded GPU by default.**
+**This section does not apply to Macs. Newer Macs with M1 chips or better can now use MPS by default.**
 
 If you have an NVidia GPU and want to use it to massively speed everything up - we strongly recommend doing this if you can - you will need to install CUDA-enabled PyTorch. Begin by installing the NVidia drivers and CUDA:
 
@@ -177,10 +177,11 @@ This will translate all texts in the directory `~/tibetan_texts` that have the e
 
 A sample set of Tibetan documents to experiment on is available at <https://compassionai.s3.amazonaws.com/public/translation_test_docs.zip>.
 
-To use CUDA, pass in `cuda=true`. For example:
+To use CUDA, pass in `cuda=true`, and to use MPS pass in `mps=true`. For example:
 
 ```bash
 lotsawa-translate mode=batch mode.input_glob=~/tibetan_texts/*.bo cuda=true
+lotsawa-translate mode=batch mode.input_glob=~/tibetan_texts/*.bo mps=true
 ```
 
 If your GPU has less than 8GB of VRAM you may see CUDA OOM errors. We recommend reducing the number of beams during beam search. The easiest way to do this is as follows:
