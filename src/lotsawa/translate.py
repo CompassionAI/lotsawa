@@ -119,7 +119,8 @@ def main(cfg):
         level=logging.INFO,
     )
 
-    translator = Translator(os.path.join(cfg.model.model_ckpt, cfg.model.model_size))
+    translator = Translator(
+        os.path.join(cfg.model.model_ckpt, cfg.model.model_size), deepspeed_cfg=getattr(cfg, "deepspeed_cfg", None))
     translator.num_beams = cfg.generation.generation.num_beams
     if hasattr(cfg.model, "decoding_length"):
         translator.decoding_length = cfg.model.decoding_length
@@ -139,4 +140,8 @@ def main(cfg):
 
 
 if __name__ == "__main__":
-    main()      # pylint: disable=no-value-for-parameter
+    hydra_args = [sys.argv[0]] + [arg for arg in sys.argv[1:] if not arg.startswith('--')]
+    hf_args = [sys.argv[0]] + [arg for arg in sys.argv[1:] if arg.startswith('--')]
+
+    sys.argv = hydra_args       # Kludge to keep the Hydra decorator working
+    main()                      # pylint: disable=no-value-for-parameter

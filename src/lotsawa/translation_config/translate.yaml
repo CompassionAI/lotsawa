@@ -16,3 +16,4 @@ hydra:
 
 cuda: false
 mps: false
+deepspeed_cfg: ~
