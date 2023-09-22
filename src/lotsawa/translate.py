@@ -91,6 +91,9 @@ def batch(translator, mode_cfg, generation_cfg, target_language_code):
                 for preproc_func in generation_cfg.processing.postprocessing
             ]
 
+            from cai_common.dict.numbers import tibetan_digits, tibetan_halves
+            for c in tibetan_digits + tibetan_halves:
+                bo_text = bo_text.replace(c, "")
             for src_segment, tgt_segment in translator.batch_translate(
                 bo_text,
                 tqdm=tqdm,
@@ -132,6 +135,7 @@ def main(cfg):
         translator.cuda()
     if cfg.mps:
         translator.mps()
+    translator.add_score = getattr(cfg, "add_score", False)
 
     if target_language_code is not None and hasattr(cfg, "word_exclusion"):
         translator.bad_words = getattr(cfg.word_exclusion, target_language_code, [])
