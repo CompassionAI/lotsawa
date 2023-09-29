@@ -9,7 +9,7 @@ from hydra.utils import instantiate
 from omegaconf import OmegaConf
 from tqdm.auto import tqdm
 
-from cai_garland.utils.translator import Translator
+from cai_garland.utils.translator import Translator, RerankedSmoothedBeamSearchSettings
 
 
 logger = logging.getLogger(__name__)
@@ -124,7 +124,6 @@ def main(cfg):
 
     translator = Translator(
         os.path.join(cfg.model.model_ckpt, cfg.model.model_size), deepspeed_cfg=getattr(cfg, "deepspeed_cfg", None))
-    translator.num_beams = cfg.generation.generation.num_beams
     if hasattr(cfg.model, "decoding_length"):
         translator.decoding_length = cfg.model.decoding_length
     if hasattr(cfg.generation.generation, "pooled_context"):
@@ -139,6 +138,19 @@ def main(cfg):
 
     if target_language_code is not None and hasattr(cfg, "word_exclusion"):
         translator.bad_words = getattr(cfg.word_exclusion, target_language_code, [])
+
+    translator.method = cfg.generation.generation.method
+    if hasattr(cfg.generation.generation, "reranked_smoothed_beam_search_settings"):
+        rs_bs_cfg = cfg.generation.generation.reranked_smoothed_beam_search_settings
+        translator.method_settings = RerankedSmoothedBeamSearchSettings(
+            num_beams=rs_bs_cfg.num_beams,
+            num_return_sequences=rs_bs_cfg.num_return_sequences,
+            smoothing_factors=rs_bs_cfg.smoothing_factors,
+            reranking_model=rs_bs_cfg.reranking_model
+        )
+        translator.load_reranker(rs_bs_cfg.reranking_model)
+    else:
+        translator.num_beams = cfg.generation.generation.num_beams
 
     instantiate(cfg.mode.process_func, translator, cfg.mode, cfg.generation, target_language_code)
 
