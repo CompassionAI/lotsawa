@@ -1,0 +1,2 @@
+defaults:
+  - reranked-smoothed-beam-search-with-context
