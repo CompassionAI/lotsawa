@@ -1,6 +1,6 @@
 defaults:
   - model: uncased
-  - generation: best
+  - generation: slow
   - mode: interactive
   # - word_exclusion: bad-words-list
   - help/translate@hydra.help
