@@ -1,4 +1,4 @@
 model_ckpt: olive-cormorant-nllb
-model_size: base-600M-smooth
+model_size: base-600M-aug
 
 decoding_length: 200
