@@ -4,7 +4,8 @@ generation:
   reranked_smoothed_beam_search_settings:
     num_beams: 20
     smoothing_factors: [0, 1, 2]
-    reranking_model: olive-cormorant-nllb/base-600M
+    # reranking_model: olive-cormorant-nllb/base-600M
+    reranking_model: olive-cormorant-nllb-pooled-context/base-600M
     num_return_sequences: 1
 
   pooled_context:
