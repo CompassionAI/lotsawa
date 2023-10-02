@@ -145,7 +145,7 @@ def main(cfg):
         translator.method_settings = RerankedSmoothedBeamSearchSettings(
             num_beams=rs_bs_cfg.num_beams,
             num_return_sequences=rs_bs_cfg.num_return_sequences,
-            smoothing_factors=rs_bs_cfg.smoothing_factors,
+            smoothing_indices=rs_bs_cfg.smoothing_indices,
             reranking_model=rs_bs_cfg.reranking_model
         )
         translator.load_reranker(rs_bs_cfg.reranking_model)
