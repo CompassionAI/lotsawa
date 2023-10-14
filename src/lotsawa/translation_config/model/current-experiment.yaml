@@ -1,6 +1,6 @@
 # model_ckpt: olive-cormorant-nllb
 model_ckpt: olive-cormorant-nllb-pooled-context
 # model_size: base-3B
-model_size: base-600M-aug
+model_size: base-600M-glossary
 
 decoding_length: 200
