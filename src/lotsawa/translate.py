@@ -130,6 +130,12 @@ def main(cfg):
         translator.prepare_context_encoder(cfg.generation.generation.pooled_context.context_encoder.hf_model_name)
     target_language_code = getattr(cfg, "target_language_code", None)
 
+    if hasattr(cfg, "knowledge") and hasattr(cfg.knowledge, "glossary"):
+        glossary_cfg = cfg.knowledge.glossary
+        translator.load_glossary(
+            glossary_cfg.dataset_location, glossary_cfg.source_encoder_name, glossary_cfg.target_encoder_name
+        )
+
     if cfg.cuda:
         translator.cuda()
     if cfg.mps:

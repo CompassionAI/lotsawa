@@ -1,0 +1,4 @@
+glossary:
+  dataset_location: processed_datasets/tibetan-sanskrit-glossary
+  source_encoder_name: cai:albert-olive-cormorant/base
+  target_encoder_name: hf:facebook/bart-base

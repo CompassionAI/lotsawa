@@ -2,6 +2,7 @@ defaults:
   - model: uncased
   - generation: best
   - mode: interactive
+  - knowledge: glossary
   # - word_exclusion: bad-words-list
   - help/translate@hydra.help
   - override hydra/job_logging: colorlog
